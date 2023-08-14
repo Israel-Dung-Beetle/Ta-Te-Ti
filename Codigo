@@ -1,0 +1,80 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+This is a temporary script file.
+"""
+
+from collections import deque
+
+#Creacion de la tabla del juego
+
+Turno = deque (["O", "X"])
+Tablero = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
+
+#Funciones del funconamiento del juego
+def Mostrar_Tablero():
+    print("")
+    for Fila in Tablero:
+        print (Fila)
+
+def Actualizar_Tablero(Posicion, Jugador):
+    Tablero[Posicion[0]][Posicion[1]] = Jugador
+
+def Cambio_Turno():
+    Turno.rotate()
+    return Turno[0]
+
+def Validacion_Posicion(Posicion):     
+    Fila, Columna = Posicion.split(",")
+    return [int(Fila)-1, int(Columna)-1]
+
+def Verificacion (Posicion):
+    if 0 <= int(Posicion[0]) <= 2 and 0 <= int(Posicion[1]) <= 2:
+        if Tablero[Posicion[0]][Posicion[1]] == " ":
+            return True
+        return False
+#Ganador
+def Ganador(Jugador):
+    if Tablero[0] == [Jugador,Jugador,Jugador] or Tablero[1] == [Jugador,Jugador,Jugador] or Tablero[2] == [Jugador,Jugador,Jugador]:
+        return True
+    elif Tablero[0][0] == Jugador and Tablero[1][0] == Jugador and Tablero[2][0] == Jugador:
+        return True
+    elif Tablero[0][1] == Jugador and Tablero[1][1] == Jugador and Tablero[2][1] == Jugador:
+        return True
+    elif Tablero[0][2] == Jugador and Tablero[1][2] == Jugador and Tablero[2][2] == Jugador:
+        return True
+    elif Tablero[0][0] == Jugador and Tablero[1][1] == Jugador and Tablero[2][2] == Jugador:
+        return True
+    elif Tablero[0][2] == Jugador and Tablero[1][1] == Jugador and Tablero[2][0] == Jugador:
+        return True
+    return False
+
+#Empate
+def Empate(Jugador):
+    if Verificacion(Jugador) and Ganador(Jugador) == False:
+        return True
+    return False
+        
+#Ta-Te-Ti
+
+def TaTeTi():
+    Mostrar_Tablero()
+    Jugador = Cambio_Turno()
+    while True:
+        Posicion = input("Turno de {}, elige una posicion (fila, columna) de 1 a 3. 'salir' para terminar el juego :".format(Jugador))
+        if Posicion == 'salir':
+            print ("¡Hasta la próxima!")
+            break
+        else:
+            Posicion_t = Validacion_Posicion(Posicion)
+            if Verificacion(Posicion_t):
+                    Actualizar_Tablero(Posicion_t, Jugador)
+                    Mostrar_Tablero()
+                    if Ganador(Jugador):
+                        print("¡¡Jugador{} ha ganado!!")
+                    elif Empate (Jugador):
+                        print("¡¡Empate!!")
+            else:
+                print("Posicion {} no valida".format(Posicion))
+TaTeTi()
